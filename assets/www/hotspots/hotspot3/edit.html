@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>malihu jQuery Image Gallery</title>
+<style type="text/css">
+
+
+html,body{
+	position:relative;
+	height:100%;
+	margin:0px; 
+	padding:0px; 
+	background:#000;
+}
+*{
+	outline:none;
+}
+
+#toolbar{
+	position:fixed; 
+	z-index:3; 
+	right:10px; 
+	top:10px; 
+	padding:5px; 
+	background:url(images/fs_img_g_bg.png);
+}
+#toolbar img{
+	border:none;
+}
+#img_title{
+	position:fixed; 
+	z-index:3; 
+	left:10px; 
+	top:10px; 
+	padding:10px; 
+	background:url(images/fs_img_g_bg.png); 
+	color:#FFF; font-family:'Josefin Sans Std Light', arial, serif; font-size:24px; text-transform:uppercase;
+}
+#bg{
+	position:absolute; 
+	z-index:1; 
+	overflow:hidden; 
+	width:100%; 
+	height:100%;
+}
+#bgimg{
+	display:none; 
+	position:absolute; 
+	width:100%;
+	height:100%;
+	-ms-interpolation-mode: bicubic;
+}
+#preloader{
+	position:relative; 
+	z-index:3; 
+	width:32px; 
+	padding:20px; 
+	top:80px; 
+	margin:auto; 
+	background:#000;
+}
+#thumbnails_wrapper{
+	z-index:2; 
+	position:fixed; 
+	bottom:0; 
+	width:100%; 
+	background:url(images/empty.gif); /* stupid ie needs a background value to understand hover area */
+}
+#outer_container{
+	position:relative; 
+	padding:0; 
+	width:100%; 
+	margin:40px auto;
+}
+#outer_container .thumbScroller{
+	position:relative; 
+	overflow:hidden; 
+	background:url(images/fs_img_g_bg.png);
+}
+#outer_container .thumbScroller, #outer_container .thumbScroller .container, #outer_container .thumbScroller .content{
+	height:170px;
+}
+#outer_container .thumbScroller .container{
+	position:relative; 
+	left:0;
+}
+#outer_container .thumbScroller .content{
+	float:left;
+}
+#outer_container .thumbScroller .content div{
+	margin:5px; 
+	height:100%;
+}
+#outer_container .thumbScroller img{
+	border:5px solid #fff;
+	width:220px;
+	height:138px;
+}
+#outer_container .thumbScroller .content div a{
+	display:block; 
+	padding:5px;
+}
+
+.nextImageBtn, .prevImageBtn{
+	display:block; 
+	position:absolute; 
+	width:50px; 
+	height:50px; 
+	bottom:250px; 
+	z-index:3; 
+	filter:alpha(opacity=40); //IE5-8
+	-moz-opacity:0.4; 
+	-khtml-opacity:0.4;// safria1.x
+	opacity:0.4;
+}
+.nextImageBtn:hover,.prevImageBtn:hover{
+	filter:alpha(opacity=80); 
+	-moz-opacity:0.8; 
+	-khtml-opacity:0.8; 
+	opacity:0.8;
+}
+.nextImageBtn{
+	right:0; 
+	background:#000 url(images/nextImgBtn.png) center center no-repeat;
+}
+.prevImageBtn{
+	background:#000 url(images/prevImgBtn.png) center center no-repeat;
+}
+
+</style>
+
+
+</head>
+<body>
+<div id="bg">
+	<a href="#" class="nextImageBtn" title="next"></a>
+	<a href="#" class="prevImageBtn" title="previous"></a>
+	<img src="" alt="" title="" id="bgimg" name=""/>
+</div>
+<div id="preloader">
+	<img src="images/ajax-loader_dark.gif" width="32" height="32" />
+</div>
+<div id="img_title"></div>
+<!--<div id="toolbar">
+	<a href="#" title="Maximize" onClick="ImageViewMode('full');return false">
+		<img src="images/toolbar_fs_icon.png" width="50" height="50"  />
+	</a>
+</div>-->
+<div id="thumbnails_wrapper">
+	<div id="outer_container">
+		<div class="thumbScroller">
+			<div class="container">
+				<!--<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_denebola.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_denebola_thumb.jpg" title="Denebola" alt="Denebola" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_lux.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_lux_thumb.jpg" title="Lux Aeterna" alt="Lux Aeterna" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_dk.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_dk_thumb.jpg" title="X-Wing on patrol" alt="X-Wing on patrol" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_albireo.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_albireo_thumb.jpg" title="Albireo Outpost" alt="Albireo Outpost" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_church.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_church_thumb.jpg" title="Church of Heaven" alt="Church of Heaven" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_Decampment.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_Decampment_thumb.jpg" title="Decampment" alt="Decampment" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_Hibernaculum.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_Hibernaculum_thumb.jpg" title="Hibernaculum" alt="Hibernaculum" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_lucernarium.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_lucernarium_thumb.jpg" title="Supremus Lucernarium" alt="Supremus Lucernarium" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_moons.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_moons_thumb.jpg" title="Aurea Mediocritas" alt="Aurea Mediocritas" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_praedestinatio.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_praedestinatio_thumb.jpg" title="Praedestinatio" alt="Praedestinatio" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_transitorius.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_transitorius_thumb.jpg" title="Transitorius" alt="Transitorius" class="thumb" /></a></div>
+				</div>
+				<div class="content">
+					<div><a href="images/Universe_and_planets_digital_art_wallpaper_victimofgravity.jpg"><img src="images/Universe_and_planets_digital_art_wallpaper_victimofgravity_thumb.jpg" title="Victim of Gravity" alt="Victim of Gravity" class="thumb" /></a></div>
+				</div>-->
+			</div>
+		</div>
+	</div>
+</div>
+
+	  	<!-- 下面这些代码的位置不能变，包括 js 文件的引入顺序也不能变 -->
+
+		<!-- 这里是对话框容器 -->
+		<div id="dialog-form" title="" style="font-family: 'Microsoft YaHei'; font-size: 13px;">
+		</div>
+		
+		<style type="text/css">.abtn{ cursor: pointer; } input,textarea{ outline: none;}</style>
+
+		<!-- 动态引入 jquery -->
+		<script type="text/javascript">
+			if (typeof jQuery == 'undefined'){
+				document.write(unescape('%3Cscript src="/libs/jquery.min.js" %3E%3C/script%3E'));
+			}
+		</script>
+		<!-- jquery ui -->
+		<link rel="stylesheet" type="text/css" href="/libs/jquery/jquery-ui.css">
+		<script type="text/javascript" src="/libs/jquery/jquery-ui.js"></script>
+		<script type="text/javascript" src="/libs/jquery/jquery.form.js"></script>
+		<!-- jquery noty -->
+		<script type="text/javascript" src="/libs/jquery/noty/jquery.noty.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/layouts/top.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/layouts/topCenter.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/themes/default.js"></script>
+		<!-- alpacajs -->
+		<script type="text/javascript" src="/libs/jquery/jquery.tmpl.js"></script>
+		<script type="text/javascript" src="/libs/alpaca/js/alpaca.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/libs/alpaca/css/alpaca-jqueryui.css">
+		<link rel="stylesheet" type="text/css" href="/libs/alpaca/css/alpaca.min.css">
+		<!-- glue util -->
+		<script type="text/javascript" src="/libs/mask.js"></script>
+		<script type="text/javascript" src="/libs/gutil.js"></script>
+		<!-- current module edit -->
+		<script type="text/javascript" src="js/edit.js"></script>
+		<script type="text/javascript" src="js/gallery.js"></script>
+</body>
+</html>

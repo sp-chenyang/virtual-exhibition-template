@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+<title>malihu jQuery Image Gallery</title>
+<style type="text/css">
+html,body{
+	height:100%;
+	width:100%;
+}
+*{
+	outline:none;
+}
+body{
+	margin:0; 
+	padding:0;
+}
+#bg_image{
+	position:absolute;
+	margin:0; 
+	padding:0;
+	width:100%;
+	height:100%;
+}
+#bg{
+	position:absolute; 
+	z-index:1; 
+	overflow:hidden; 
+	width:96%; 
+	height:96%;
+	margin:1% 2%;
+	padding:0;
+}
+#bgimg{
+	-ms-interpolation-mode: bicubic;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	display:none;
+	cursor:pointer;
+}
+#bgimg_postion{
+	position:relative;
+	width:80%;
+	height:80%;
+	margin:5% 10%;
+}
+
+#outer_container{
+	display:none;
+}
+#outer_container .thumbScroller{
+	position:relative; 
+	overflow:hidden; 
+}
+#outer_container .thumbScroller, #outer_container .thumbScroller .container, #outer_container .thumbScroller .content{
+	height:170px;
+}
+#outer_container .thumbScroller .container{
+	position:relative; 
+	left:0;
+}
+#outer_container .thumbScroller .content{
+	
+	float:left;
+}
+#outer_container .thumbScroller .content div{
+	margin:5px; 
+	height:100%;
+}
+#outer_container .thumbScroller img{
+	border:5px solid #fff;
+}
+#outer_container .thumbScroller .content div a{
+	display:block; 
+	padding:5px;
+}
+
+.nextImageBtn, .prevImageBtn{
+	display:block; 
+	position:absolute; 
+	width:50px; 
+	height:50px; 
+	top:50%; 
+	margin:-25px 10px 0 10px; 
+	z-index:3; 
+	filter:alpha(opacity=40); //IE5-8
+	-moz-opacity:0.4; 
+	-khtml-opacity:0.4;// safria1.x
+	opacity:0.4;
+}
+.nextImageBtn:hover,.prevImageBtn:hover{
+	filter:alpha(opacity=80); 
+	-moz-opacity:0.8; 
+	-khtml-opacity:0.8; 
+	opacity:0.8;
+}
+.nextImageBtn{
+	right:0; 
+	background:#000 url(images/nextImgBtn.png) center center no-repeat;
+}
+.prevImageBtn{
+	background:#000 url(images/prevImgBtn.png) center center no-repeat;
+}
+
+</style>
+
+</head>
+<body>
+<img id="bg_image" src="" />
+<div id="bg">
+	<a href="#" class="nextImageBtn" title="next"></a>
+	<a href="#" class="prevImageBtn" title="previous"></a>
+	<div id="bgimg_postion">
+		<img src="" id="bgimg" name=""/>
+	</div>
+</div>
+<div id="outer_container">
+	<div class="thumbScroller">
+		<div class="container">
+			<!--<div class="content">
+				<div><a href="images/1.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/2.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/3.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/4.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/5.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/6.png"></a></div>
+			</div>
+			<div class="content">
+				<div><a href="images/7.png"></a></div>
+			</div>-->
+			
+		</div>
+	</div>
+</div>	
+	<!-- 下面这些代码的位置不能变，包括 js 文件的引入顺序也不能变 -->
+
+		<!-- 这里是对话框容器 -->
+		<div id="dialog-form" title="" style="font-family: 'Microsoft YaHei'; font-size: 13px;">
+		</div>
+		
+		<style type="text/css">.abtn{ cursor: pointer; } input,textarea{ outline: none;}</style>
+
+		<!-- 动态引入 jquery -->
+		<script type="text/javascript">
+			if (typeof jQuery == 'undefined'){
+				document.write(unescape('%3Cscript src="/libs/jquery.min.js" %3E%3C/script%3E'));
+			}
+		</script>
+		<!-- jquery ui -->
+		<link rel="stylesheet" type="text/css" href="/libs/jquery/jquery-ui.css">
+		<script type="text/javascript" src="/libs/jquery/jquery-ui.js"></script>
+		<script type="text/javascript" src="/libs/jquery/jquery.form.js"></script>
+		<!-- jquery noty -->
+		<script type="text/javascript" src="/libs/jquery/noty/jquery.noty.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/layouts/top.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/layouts/topCenter.js"></script>
+		<script type="text/javascript" src="/libs/jquery/noty/themes/default.js"></script>
+		<!-- alpacajs -->
+		<script type="text/javascript" src="/libs/jquery/jquery.tmpl.js"></script>
+		<script type="text/javascript" src="/libs/alpaca/js/alpaca.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/libs/alpaca/css/alpaca-jqueryui.css">
+		<link rel="stylesheet" type="text/css" href="/libs/alpaca/css/alpaca.min.css">
+		<!-- glue util -->
+		<script type="text/javascript" src="/libs/mask.js"></script>
+		<script type="text/javascript" src="/libs/gutil.js"></script>
+		<!-- current module edit -->
+		<script type="text/javascript" src="js/edit.js"></script>
+		<script type="text/javascript" src="js/gallery.js"></script>
+
+
+</body>
+</html>
