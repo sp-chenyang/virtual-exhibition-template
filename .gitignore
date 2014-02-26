@@ -69,3 +69,5 @@ local.properties
  
 # PDT-specific
 .buildpath
+gen/com/example/helloworld/BuildConfig.java
+gen/com/example/helloworld/R.java
